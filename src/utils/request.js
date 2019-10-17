@@ -1,18 +1,20 @@
 import axios from 'axios'
 
-
-//创建axios实例
 class HttpRequest {
-  constructor(baseUrl = baesURL) {
-    this.baseUrl = baseUrl,
-      this.queue = {}
+  constructor(baseUrl = baseURL) { //不懂
+    this.baseUrl = baseUrl
+    this.queue = {}
   }
   getInsideConfig() {
     const config = {
-      baseUrl=this.baseUrl,
-      headers:{
-        
-      }
+      baseURL: this.baseUrl,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      credentials: 'same-origin',
+      withCredentials: true   //表示跨域请求时是否需要使用凭证
     }
   }
 }
