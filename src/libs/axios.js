@@ -1,6 +1,10 @@
-import axios from 'axios'
-import user from '@/store/module/user.js'
-// import { baseURL } from '@/config'
+import axios from "axios";
+import { Base64 } from "js-base64";
+import user from "@/store/module/user.js";
+import configIndex from "@/config";
+import { Loading } from "element-ui";
+import store from "@/store";
+let loadingInstance = null;
 
 class HttpRequest {
   constructor(baseUrl = baseURL) { // 如果传入参数就用传入的，没有就用baseURL
@@ -52,15 +56,67 @@ class HttpRequest {
     instance.interceptors.response.use(res => { // response拦截器
       // 统一增加错误提示
       this.distroy(url)
-      const { data, status } = res // ES6解构赋值
-      return { data, status }
+      const code = process.env.NODE_ENV === 'development' && configIndex.isMock ? 200 : body.code
+      if (code === 40000) {
+        store.dispatch('handleLogOut').then(res => {
+          window.location.href = '/login'
+        })
+        return { body, code, msg }
+      }
+      // console.log('返回参数的类型=', typeof body)
+      if (typeof body === 'string' && !code) {
+        const data = body
+        return { data }
+      }
+      if (code === 200) {
+        const data = JSON.parse(JSON.stringify(body.data))
+        const msg = body.msg
+        return { data, code, msg }
+      }
+      if (code !== 200) {
+        const data = body.data
+        const msg = body.msg
+        return { data, code, msg }
+      }
+      // const { data, status } = res // ES6解构赋值
+      // return { data, status }
     }, error => {
       this.distroy(url)
-      return Promise.reject(error)
+      console.log('网络故障')
+      // return Promise.reject(error)
+      return new Promise((resolve, reject) => {
+        if (error.request.status === 401) {
+          console.log('401')
+        } else if (error.request.status === 500) {
+          console.log('500')
+        } else {
+          console.log('404')
+        }
+        reject(error)
+      })
     })
   }
   request(options) {
     const instance = axios.create()
+    let data = {}
+    if (options.params || options.data) {
+      let dataObj = options.params ? options.params : options.data
+      if (!(options.data instanceof FormData)) {
+        data = Object.assign(dataObj, dataObj)
+        if (options.method === 'post' || options.method === 'put') {
+          if (!configIndex.isMock || process.env.NODE_ENV !== 'development') {
+            data = Base64.encode(JSON.stringify(data))
+          }
+        }
+      } else {
+        data = dataObj
+      }
+    }
+    if (options.method === 'get') {
+      options.params = data
+    } else {
+      options.data = data
+    }
     options = Object.assign(this.getInsideConfig(), options) // 合并多个对象
     this.interceptors(instance, options.url)
     return instance(options) // 执行调用
