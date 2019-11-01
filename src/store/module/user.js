@@ -1,4 +1,4 @@
-import { setToken, getToken } from '@/utils/index.js'
+import { setToken, getToken } from '@/libs/index.js'
 export default {
     state: {
         token: getToken()

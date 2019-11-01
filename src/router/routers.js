@@ -27,7 +27,7 @@ export default [
       hideInMenu: false,
       isLogin: true
     },
-    component: () => import(/* webpackChunkName: "login" */ '@/views/layout/login/login.vue')
+    component: () => import(/* webpackChunkName: "login" */ '@/views/default/login/login.vue')
   },
   {
     path: '/',
@@ -52,7 +52,7 @@ export default [
           notCache: true,
           isAlone: true
         },
-        component: () => import('@/views/layout/home/home.vue')
+        component: () => import('@/views/default/home/home.vue')
       }
     ]
   },
