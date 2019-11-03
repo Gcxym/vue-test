@@ -1,4 +1,4 @@
-// import Main from '@/views/default/main'
+import Main from '@/views/default/main'
 import parentView from '@/components/parent-view'
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -21,7 +21,7 @@ import parentView from '@/components/parent-view'
 export default [
   {
     path: '/login',
-    name: "login",
+    name: 'login',
     meta: {
       title: '登录',
       hideInMenu: false,

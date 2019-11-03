@@ -1,7 +1,7 @@
-import { setToken, getToken } from '@/libs/index.js'
+// import { setToken, getToken } from '@/libs/util.js'
 export default {
     state: {
-        token: getToken()
+        // token: getToken()
     },
     mutations: {
 

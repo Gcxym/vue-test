@@ -1,4 +1,4 @@
-import mock from 'mockjs'
+import Mock from 'mockjs'
 import config from '@/config'
 import { logout, getUserInfo, login } from './mockData'
 

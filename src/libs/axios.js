@@ -21,8 +21,8 @@ class HttpRequest {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-Requested-With': 'XMLHttpRequest'
       },
-      credentials: 'same-origin',
-      withCredentials: true   //表示跨域请求时是否需要使用凭证
+      // credentials: 'same-origin',
+      // withCredentials: true   //表示跨域请求时是否需要使用凭证
     }
     if (user.state.token) {
       config.headers.Authorization = user.state.token
